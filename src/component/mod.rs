@@ -1,7 +1,7 @@
 //! Topcoat `<Shield>` component and SSR template integration.
 
 use base64::Engine;
-use topcoat::view::{component, view, View};
+use topcoat::view::{View, component, view};
 
 use crate::dictionary::tokenizer::{ActiveLigature, ShieldResult, TextGuardEngine};
 use crate::font::builder::FontBuilder;
@@ -48,7 +48,10 @@ pub async fn Shield<'a>(
 
     let font_builder = match base_font {
         Some(bytes) => FontBuilder::from_bytes(bytes).unwrap_or_else(|e| {
-            eprintln!("Warning: failed to parse custom base_font: {}. Falling back to default font.", e);
+            eprintln!(
+                "Warning: failed to parse custom base_font: {}. Falling back to default font.",
+                e
+            );
             FontBuilder::default()
         }),
         None => FontBuilder::from_env(),
@@ -57,7 +60,9 @@ pub async fn Shield<'a>(
     let (font_bytes, format_str, mime_str) = match font_builder.build_woff(&result.ligatures) {
         Ok(b) if !b.is_empty() => (b, "woff", "font/woff"),
         _ => (
-            font_builder.build_font(&result.ligatures).unwrap_or_default(),
+            font_builder
+                .build_font(&result.ligatures)
+                .unwrap_or_default(),
             "truetype",
             "font/truetype",
         ),
@@ -145,7 +150,10 @@ mod tests {
         let rendered = v.single().await.expect("single").render(&cx);
 
         assert!(rendered.contains("@font-face"));
-        assert!(rendered.contains("data:font/woff;charset=utf-8;base64,") || rendered.contains("data:font/truetype;charset=utf-8;base64,"));
+        assert!(
+            rendered.contains("data:font/woff;charset=utf-8;base64,")
+                || rendered.contains("data:font/truetype;charset=utf-8;base64,")
+        );
         assert!(rendered.contains("engine"));
         assert!(rendered.contains("aria-hidden=\"true\""));
         assert!(rendered.contains("horse"));

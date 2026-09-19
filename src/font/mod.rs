@@ -34,7 +34,8 @@ mod tests {
         let woff_bytes = builder.build_woff(&ligs).expect("build woff");
         assert!(!woff_bytes.is_empty());
         assert_eq!(&woff_bytes[0..4], b"wOFF", "Invalid WOFF signature");
-        println!("TTF size: {} bytes, WOFF size: {} bytes (compression: {:.1}%)",
+        println!(
+            "TTF size: {} bytes, WOFF size: {} bytes (compression: {:.1}%)",
             font_bytes.len(),
             woff_bytes.len(),
             (1.0 - (woff_bytes.len() as f64 / font_bytes.len() as f64)) * 100.0

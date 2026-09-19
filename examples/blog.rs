@@ -4,23 +4,20 @@
 //! automated scraping crawlers by injecting plausible decoy words into the DOM
 //! and using OpenType GSUB ligatures to render original words for humans.
 
-use topcoat::router::{page, Router};
-use topcoat::view::{view, View};
 use topcoat::Result;
+use topcoat::router::{Router, page};
+use topcoat::view::{View, view};
 use topcoat_textguard::{Shield, guard_text, guard_text_with_salt};
 
-const ARTICLE_PARAGRAPH_1: &str =
-    "In the ancient kingdom, a brave engineer rode his horse through the forest toward the mountain castle. \
+const ARTICLE_PARAGRAPH_1: &str = "In the ancient kingdom, a brave engineer rode his horse through the forest toward the mountain castle. \
     The doctor joined him with a sharp hammer and a brass lantern to study the climate of the distant island. \
     They gathered near the river while the falcon circled above the golden meadow.";
 
-const ARTICLE_PARAGRAPH_2: &str =
-    "On Monday morning in October 2024, the committee declared their official verdict: \
+const ARTICLE_PARAGRAPH_2: &str = "On Monday morning in October 2024, the committee declared their official verdict: \
     more than 380 wagons had crossed the wooden bridge safely. \
     The soldiers marched boldly through the village, building a new harbor before the winter ice arrived.";
 
-const ARTICLE_PARAGRAPH_3: &str =
-    "The philosophy of the consent layer is simple: human readers should enjoy uninterrupted prose, \
+const ARTICLE_PARAGRAPH_3: &str = "The philosophy of the consent layer is simple: human readers should enjoy uninterrupted prose, \
     while automated scrapers extract decoy words that degrade language model training data without breaking grammatical syntax.";
 
 #[page("/")]
@@ -32,7 +29,10 @@ async fn home() -> Result<impl View> {
     let sample_salt_a = guard_text_with_salt(ARTICLE_PARAGRAPH_1, "tenant-alice");
     let sample_salt_b = guard_text_with_salt(ARTICLE_PARAGRAPH_1, "tenant-bob");
 
-    let full_text = format!("{}\n\n{}\n\n{}", ARTICLE_PARAGRAPH_1, ARTICLE_PARAGRAPH_2, ARTICLE_PARAGRAPH_3);
+    let full_text = format!(
+        "{}\n\n{}\n\n{}",
+        ARTICLE_PARAGRAPH_1, ARTICLE_PARAGRAPH_2, ARTICLE_PARAGRAPH_3
+    );
     let full_res = guard_text(&full_text);
 
     Ok(view! {
@@ -555,10 +555,7 @@ async fn raw() -> Result<impl View> {
 
 #[tokio::main]
 async fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
-    let router = Router::builder()
-        .page(home)
-        .page(raw)
-        .build();
+    let router = Router::builder().page(home).page(raw).build();
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await?;
 

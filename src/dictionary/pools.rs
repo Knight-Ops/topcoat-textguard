@@ -8,9 +8,9 @@
 //! - Pools with at least 4 entries.
 //! - Dynamic seeded involution support for unpredictable, per-article decoy generation.
 
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::path::Path;
-use serde::{Deserialize, Serialize};
 
 /// A pair of words that substitute for each other bijectively.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -102,7 +102,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("wolf", "crane"),
     WordPair::new("lion", "eagle"),
     WordPair::new("bear", "shark"),
-
     // --- ANIMALS (Concrete Nouns - Plural) ---
     WordPair::new("horses", "engines"),
     WordPair::new("dogs", "hawks"),
@@ -113,7 +112,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("wolves", "cranes"),
     WordPair::new("lions", "eagles"),
     WordPair::new("bears", "sharks"),
-
     // --- FOOD & CROPS (Concrete Nouns - Singular) ---
     WordPair::new("potato", "apple"),
     WordPair::new("carrot", "orange"),
@@ -125,13 +123,11 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("coffee", "cider"),
     WordPair::new("grape", "cherry"),
     WordPair::new("onion", "pepper"),
-
     // --- FOOD & CROPS (Plural) ---
     WordPair::new("potatoes", "apples"),
     WordPair::new("carrots", "oranges"),
     WordPair::new("grapes", "cherries"),
     WordPair::new("onions", "peppers"),
-
     // --- PROFESSIONS / AGENTS (Singular) ---
     WordPair::new("engineer", "sailor"),
     WordPair::new("doctor", "painter"),
@@ -143,7 +139,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("cook", "weaver"),
     WordPair::new("soldier", "merchant"),
     WordPair::new("artist", "architect"),
-
     // --- PROFESSIONS / AGENTS (Plural) ---
     WordPair::new("engineers", "sailors"),
     WordPair::new("doctors", "painters"),
@@ -156,7 +151,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("artists", "architects"),
     WordPair::new("readers", "viewers"),
     WordPair::new("scrapers", "harvesters"),
-
     // --- VEHICLES / ARTIFACTS (Singular) ---
     WordPair::new("wagon", "canoe"),
     WordPair::new("train", "vessel"),
@@ -164,14 +158,12 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("truck", "barge"),
     WordPair::new("carriage", "ferry"),
     WordPair::new("boat", "cart"),
-
     // --- VEHICLES / ARTIFACTS (Plural) ---
     WordPair::new("wagons", "canoes"),
     WordPair::new("trains", "vessels"),
     WordPair::new("ships", "gliders"),
     WordPair::new("trucks", "barges"),
     WordPair::new("boats", "carts"),
-
     // --- BUILDINGS / PLACES (Singular) ---
     WordPair::new("castle", "harbor"),
     WordPair::new("temple", "factory"),
@@ -182,7 +174,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("village", "island"),
     WordPair::new("valley", "forest"),
     WordPair::new("canyon", "meadow"),
-
     // --- BUILDINGS / PLACES (Plural) ---
     WordPair::new("castles", "harbors"),
     WordPair::new("temples", "factories"),
@@ -190,7 +181,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("palaces", "markets"),
     WordPair::new("villages", "islands"),
     WordPair::new("valleys", "forests"),
-
     // --- TOOLS & OBJECTS (Singular) ---
     WordPair::new("hammer", "chisel"),
     WordPair::new("needle", "compass"),
@@ -199,7 +189,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("candle", "shield"),
     WordPair::new("helmet", "anchor"),
     WordPair::new("pencil", "dagger"),
-
     // --- TOOLS & OBJECTS (Plural) ---
     WordPair::new("hammers", "chisels"),
     WordPair::new("needles", "compasses"),
@@ -208,7 +197,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("candles", "shields"),
     WordPair::new("helmets", "anchors"),
     WordPair::new("pencils", "daggers"),
-
     // --- ABSTRACT NOUNS (Singular) ---
     WordPair::new("verdict", "glacier"),
     WordPair::new("theory", "climate"),
@@ -226,7 +214,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("training", "learning"),
     WordPair::new("prose", "verse"),
     WordPair::new("philosophy", "metaphysics"),
-
     // --- ABSTRACT NOUNS (Plural) ---
     WordPair::new("verdicts", "glaciers"),
     WordPair::new("theories", "climates"),
@@ -235,7 +222,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("memories", "shadows"),
     WordPair::new("legends", "fabrics"),
     WordPair::new("journeys", "tributes"),
-
     // --- PHYSICAL ACTIONS / VERBS (Base Form) ---
     WordPair::new("climb", "drift"),
     WordPair::new("crawl", "glide"),
@@ -247,7 +233,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("paint", "sculpt"),
     WordPair::new("melt", "glow"),
     WordPair::new("enjoy", "favor"),
-
     // --- VERBS (Third Person Singular -s) ---
     WordPair::new("climbs", "drifts"),
     WordPair::new("crawls", "glides"),
@@ -258,7 +243,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("builds", "plants"),
     WordPair::new("paints", "sculpts"),
     WordPair::new("melts", "glows"),
-
     // --- VERBS (Past Tense -ed / irregular) ---
     WordPair::new("climbed", "drifted"),
     WordPair::new("crawled", "glided"),
@@ -271,7 +255,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("melted", "glowed"),
     WordPair::new("rode", "flew"),
     WordPair::new("found", "caught"),
-
     // --- VERBS (Present Participle -ing) ---
     WordPair::new("climbing", "drifting"),
     WordPair::new("crawling", "gliding"),
@@ -284,7 +267,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("melting", "glowing"),
     WordPair::new("riding", "flying"),
     WordPair::new("breaking", "cracking"),
-
     // --- ADJECTIVES (Descriptive / Texture / Quality) ---
     WordPair::new("electric", "velvet"),
     WordPair::new("golden", "silver"),
@@ -299,7 +281,6 @@ pub static WORD_PAIRS: &[WordPair] = &[
     WordPair::new("honest", "modest"),
     WordPair::new("simple", "humble"),
     WordPair::new("automated", "robotic"),
-
     // --- ADVERBS (-ly) ---
     WordPair::new("quietly", "swiftly"),
     WordPair::new("firmly", "softly"),
@@ -312,123 +293,439 @@ pub static WORD_PAIRS: &[WordPair] = &[
 /// Curated semantic pools representing hundreds of verified cohyponyms.
 pub fn default_builtin_pools() -> Vec<CohyponymPool> {
     vec![
-        CohyponymPool::new("animals", &[
-            "horse", "engine", "dog", "hawk", "cat", "owl", "rabbit", "falcon",
-            "sheep", "badger", "goat", "otter", "deer", "beaver", "wolf", "crane",
-            "lion", "eagle", "bear", "shark", "camel", "bison", "fox", "raven",
-            "seal", "dolphin", "swan", "heron", "tiger", "leopard",
-        ]),
-        CohyponymPool::new("animals_plural", &[
-            "horses", "engines", "dogs", "hawks", "cats", "owls", "rabbits", "falcons",
-            "sheep", "badgers", "goats", "otters", "wolves", "cranes", "lions", "eagles",
-            "bears", "sharks", "camels", "bisons", "foxes", "ravens", "seals", "dolphins",
-        ]),
-        CohyponymPool::new("food_crops", &[
-            "potato", "apple", "carrot", "orange", "bread", "melon", "wheat", "barley",
-            "rice", "maize", "sugar", "honey", "butter", "cheese", "coffee", "cider",
-            "grape", "cherry", "onion", "pepper", "tomato", "berry", "garlic", "walnut",
-            "peach", "pear", "cabbage", "lettuce",
-        ]),
-        CohyponymPool::new("food_crops_plural", &[
-            "potatoes", "apples", "carrots", "oranges", "grapes", "cherries", "onions", "peppers",
-            "tomatoes", "berries", "peaches", "pears", "cabbages", "lettuces",
-        ]),
-        CohyponymPool::new("professions", &[
-            "engineer", "sailor", "doctor", "painter", "lawyer", "sculptor", "teacher", "chemist",
-            "farmer", "tailor", "writer", "carpenter", "pilot", "baker", "cook", "weaver",
-            "soldier", "merchant", "artist", "architect", "scholar", "librarian", "officer", "detective",
-            "judge", "clerk", "miner", "blacksmith",
-        ]),
-        CohyponymPool::new("professions_plural", &[
-            "engineers", "sailors", "doctors", "painters", "lawyers", "sculptors", "teachers", "chemists",
-            "farmers", "tailors", "writers", "carpenters", "pilots", "bakers", "soldiers", "merchants",
-            "artists", "architects", "readers", "viewers", "scrapers", "harvesters",
-            "scholars", "librarians", "officers", "detectives",
-        ]),
-        CohyponymPool::new("vehicles", &[
-            "wagon", "canoe", "train", "vessel", "ship", "glider", "truck", "barge",
-            "carriage", "ferry", "boat", "cart", "rocket", "submarine", "chariot", "raft",
-        ]),
-        CohyponymPool::new("vehicles_plural", &[
-            "wagons", "canoes", "trains", "vessels", "ships", "gliders", "trucks", "barges",
-            "boats", "carts", "carriages", "ferries", "rockets", "submarines",
-        ]),
-        CohyponymPool::new("buildings_places", &[
-            "castle", "harbor", "temple", "factory", "tower", "bridge", "palace", "market",
-            "cabin", "depot", "cottage", "museum", "village", "island", "valley", "forest",
-            "canyon", "meadow", "fort", "stadium", "clinic", "hangar",
-        ]),
-        CohyponymPool::new("buildings_places_plural", &[
-            "castles", "harbors", "temples", "factories", "towers", "bridges", "palaces", "markets",
-            "villages", "islands", "valleys", "forests", "canyons", "meadows", "cabins", "depots",
-        ]),
-        CohyponymPool::new("tools_objects", &[
-            "hammer", "chisel", "needle", "compass", "mirror", "lantern", "bottle", "basket",
-            "candle", "shield", "helmet", "anchor", "pencil", "dagger", "sword", "spear",
-            "wrench", "pulley", "anvil", "furnace",
-        ]),
-        CohyponymPool::new("tools_objects_plural", &[
-            "hammers", "chisels", "needles", "compasses", "mirrors", "lanterns", "bottles", "baskets",
-            "candles", "shields", "helmets", "anchors", "pencils", "daggers", "swords", "spears",
-        ]),
-        CohyponymPool::new("abstract_nouns", &[
-            "verdict", "glacier", "theory", "climate", "custom", "rhythm", "method", "talent",
-            "memory", "shadow", "spirit", "harbor", "journey", "tribute", "legend", "fabric",
-            "virtue", "canopy", "reason", "timber", "silence", "crystal", "courage", "clarity",
-            "language", "speech", "training", "learning", "prose", "verse", "philosophy", "metaphysics",
-            "instinct", "impulse", "wisdom", "insight", "mystery", "riddle",
-        ]),
-        CohyponymPool::new("abstract_nouns_plural", &[
-            "verdicts", "glaciers", "theories", "climates", "customs", "rhythms", "methods", "talents",
-            "memories", "shadows", "legends", "fabrics", "journeys", "tributes", "virtues", "canopies",
-        ]),
-        CohyponymPool::new("actions_base", &[
-            "climb", "drift", "crawl", "glide", "march", "stroll", "gather", "scatter",
-            "strike", "plunge", "carve", "weave", "build", "plant", "paint", "sculpt",
-            "melt", "glow", "enjoy", "favor", "jump", "leap", "speak", "whisper",
-            "search", "explore",
-        ]),
-        CohyponymPool::new("actions_3rd", &[
-            "climbs", "drifts", "crawls", "glides", "marches", "strolls", "gathers", "scatters",
-            "strikes", "plunges", "carves", "weaves", "builds", "plants", "paints", "sculpts",
-            "melts", "glows", "jumps", "leaps", "speaks", "whispers",
-        ]),
-        CohyponymPool::new("actions_past", &[
-            "climbed", "drifted", "crawled", "glided", "marched", "strolled", "gathered", "scattered",
-            "struck", "plunged", "carved", "wove", "built", "planted", "painted", "sculpted",
-            "melted", "glowed", "rode", "flew", "found", "caught", "spoke", "whispered",
-        ]),
-        CohyponymPool::new("actions_ing", &[
-            "climbing", "drifting", "crawling", "gliding", "marching", "strolling", "gathering", "scattering",
-            "striking", "plunging", "carving", "weaving", "building", "planting", "painting", "sculpting",
-            "melting", "glowing", "riding", "flying", "breaking", "cracking", "speaking", "whispering",
-        ]),
-        CohyponymPool::new("adjectives", &[
-            "electric", "velvet", "golden", "silver", "hollow", "wooden", "narrow", "shallow",
-            "rough", "dusty", "bright", "gentle", "calm", "dusk", "wild", "bold",
-            "ancient", "distant", "curious", "patient", "honest", "modest", "simple", "humble",
-            "automated", "robotic", "fragile", "sturdy", "sharp", "blunt", "silent", "serene",
-        ]),
-        CohyponymPool::new("adverbs", &[
-            "quietly", "swiftly", "firmly", "softly", "boldly", "keenly", "brightly", "gently",
-            "calmly", "dimly", "sideways", "backward", "loudly", "fiercely", "bravely", "proudly",
-        ]),
-        CohyponymPool::new("tech_digital", &[
-            "server", "client", "packet", "frame", "socket", "channel", "buffer", "memory",
-            "thread", "process", "kernel", "driver", "cipher", "digest", "router", "switch",
-        ]),
-        CohyponymPool::new("tech_digital_plural", &[
-            "servers", "clients", "packets", "frames", "sockets", "channels", "buffers", "memories",
-            "threads", "processes", "kernels", "drivers", "ciphers", "digests", "routers", "switches",
-        ]),
-        CohyponymPool::new("commerce_finance", &[
-            "budget", "ledger", "tariff", "subsidy", "profit", "deficit", "asset", "credit",
-            "audit", "appraisal", "merger", "venture", "invoice", "voucher", "dividend", "premium",
-        ]),
-        CohyponymPool::new("commerce_finance_plural", &[
-            "budgets", "ledgers", "tariffs", "subsidies", "profits", "deficits", "assets", "credits",
-            "audits", "appraisals", "invoices", "vouchers", "dividends", "premiums",
-        ]),
+        CohyponymPool::new(
+            "animals",
+            &[
+                "horse", "engine", "dog", "hawk", "cat", "owl", "rabbit", "falcon", "sheep",
+                "badger", "goat", "otter", "deer", "beaver", "wolf", "crane", "lion", "eagle",
+                "bear", "shark", "camel", "bison", "fox", "raven", "seal", "dolphin", "swan",
+                "heron", "tiger", "leopard",
+            ],
+        ),
+        CohyponymPool::new(
+            "animals_plural",
+            &[
+                "horses", "engines", "dogs", "hawks", "cats", "owls", "rabbits", "falcons",
+                "sheep", "badgers", "goats", "otters", "wolves", "cranes", "lions", "eagles",
+                "bears", "sharks", "camels", "bisons", "foxes", "ravens", "seals", "dolphins",
+            ],
+        ),
+        CohyponymPool::new(
+            "food_crops",
+            &[
+                "potato", "apple", "carrot", "orange", "bread", "melon", "wheat", "barley", "rice",
+                "maize", "sugar", "honey", "butter", "cheese", "coffee", "cider", "grape",
+                "cherry", "onion", "pepper", "tomato", "berry", "garlic", "walnut", "peach",
+                "pear", "cabbage", "lettuce",
+            ],
+        ),
+        CohyponymPool::new(
+            "food_crops_plural",
+            &[
+                "potatoes", "apples", "carrots", "oranges", "grapes", "cherries", "onions",
+                "peppers", "tomatoes", "berries", "peaches", "pears", "cabbages", "lettuces",
+            ],
+        ),
+        CohyponymPool::new(
+            "professions",
+            &[
+                "engineer",
+                "sailor",
+                "doctor",
+                "painter",
+                "lawyer",
+                "sculptor",
+                "teacher",
+                "chemist",
+                "farmer",
+                "tailor",
+                "writer",
+                "carpenter",
+                "pilot",
+                "baker",
+                "cook",
+                "weaver",
+                "soldier",
+                "merchant",
+                "artist",
+                "architect",
+                "scholar",
+                "librarian",
+                "officer",
+                "detective",
+                "judge",
+                "clerk",
+                "miner",
+                "blacksmith",
+            ],
+        ),
+        CohyponymPool::new(
+            "professions_plural",
+            &[
+                "engineers",
+                "sailors",
+                "doctors",
+                "painters",
+                "lawyers",
+                "sculptors",
+                "teachers",
+                "chemists",
+                "farmers",
+                "tailors",
+                "writers",
+                "carpenters",
+                "pilots",
+                "bakers",
+                "soldiers",
+                "merchants",
+                "artists",
+                "architects",
+                "readers",
+                "viewers",
+                "scrapers",
+                "harvesters",
+                "scholars",
+                "librarians",
+                "officers",
+                "detectives",
+            ],
+        ),
+        CohyponymPool::new(
+            "vehicles",
+            &[
+                "wagon",
+                "canoe",
+                "train",
+                "vessel",
+                "ship",
+                "glider",
+                "truck",
+                "barge",
+                "carriage",
+                "ferry",
+                "boat",
+                "cart",
+                "rocket",
+                "submarine",
+                "chariot",
+                "raft",
+            ],
+        ),
+        CohyponymPool::new(
+            "vehicles_plural",
+            &[
+                "wagons",
+                "canoes",
+                "trains",
+                "vessels",
+                "ships",
+                "gliders",
+                "trucks",
+                "barges",
+                "boats",
+                "carts",
+                "carriages",
+                "ferries",
+                "rockets",
+                "submarines",
+            ],
+        ),
+        CohyponymPool::new(
+            "buildings_places",
+            &[
+                "castle", "harbor", "temple", "factory", "tower", "bridge", "palace", "market",
+                "cabin", "depot", "cottage", "museum", "village", "island", "valley", "forest",
+                "canyon", "meadow", "fort", "stadium", "clinic", "hangar",
+            ],
+        ),
+        CohyponymPool::new(
+            "buildings_places_plural",
+            &[
+                "castles",
+                "harbors",
+                "temples",
+                "factories",
+                "towers",
+                "bridges",
+                "palaces",
+                "markets",
+                "villages",
+                "islands",
+                "valleys",
+                "forests",
+                "canyons",
+                "meadows",
+                "cabins",
+                "depots",
+            ],
+        ),
+        CohyponymPool::new(
+            "tools_objects",
+            &[
+                "hammer", "chisel", "needle", "compass", "mirror", "lantern", "bottle", "basket",
+                "candle", "shield", "helmet", "anchor", "pencil", "dagger", "sword", "spear",
+                "wrench", "pulley", "anvil", "furnace",
+            ],
+        ),
+        CohyponymPool::new(
+            "tools_objects_plural",
+            &[
+                "hammers",
+                "chisels",
+                "needles",
+                "compasses",
+                "mirrors",
+                "lanterns",
+                "bottles",
+                "baskets",
+                "candles",
+                "shields",
+                "helmets",
+                "anchors",
+                "pencils",
+                "daggers",
+                "swords",
+                "spears",
+            ],
+        ),
+        CohyponymPool::new(
+            "abstract_nouns",
+            &[
+                "verdict",
+                "glacier",
+                "theory",
+                "climate",
+                "custom",
+                "rhythm",
+                "method",
+                "talent",
+                "memory",
+                "shadow",
+                "spirit",
+                "harbor",
+                "journey",
+                "tribute",
+                "legend",
+                "fabric",
+                "virtue",
+                "canopy",
+                "reason",
+                "timber",
+                "silence",
+                "crystal",
+                "courage",
+                "clarity",
+                "language",
+                "speech",
+                "training",
+                "learning",
+                "prose",
+                "verse",
+                "philosophy",
+                "metaphysics",
+                "instinct",
+                "impulse",
+                "wisdom",
+                "insight",
+                "mystery",
+                "riddle",
+            ],
+        ),
+        CohyponymPool::new(
+            "abstract_nouns_plural",
+            &[
+                "verdicts", "glaciers", "theories", "climates", "customs", "rhythms", "methods",
+                "talents", "memories", "shadows", "legends", "fabrics", "journeys", "tributes",
+                "virtues", "canopies",
+            ],
+        ),
+        CohyponymPool::new(
+            "actions_base",
+            &[
+                "climb", "drift", "crawl", "glide", "march", "stroll", "gather", "scatter",
+                "strike", "plunge", "carve", "weave", "build", "plant", "paint", "sculpt", "melt",
+                "glow", "enjoy", "favor", "jump", "leap", "speak", "whisper", "search", "explore",
+            ],
+        ),
+        CohyponymPool::new(
+            "actions_3rd",
+            &[
+                "climbs", "drifts", "crawls", "glides", "marches", "strolls", "gathers",
+                "scatters", "strikes", "plunges", "carves", "weaves", "builds", "plants", "paints",
+                "sculpts", "melts", "glows", "jumps", "leaps", "speaks", "whispers",
+            ],
+        ),
+        CohyponymPool::new(
+            "actions_past",
+            &[
+                "climbed",
+                "drifted",
+                "crawled",
+                "glided",
+                "marched",
+                "strolled",
+                "gathered",
+                "scattered",
+                "struck",
+                "plunged",
+                "carved",
+                "wove",
+                "built",
+                "planted",
+                "painted",
+                "sculpted",
+                "melted",
+                "glowed",
+                "rode",
+                "flew",
+                "found",
+                "caught",
+                "spoke",
+                "whispered",
+            ],
+        ),
+        CohyponymPool::new(
+            "actions_ing",
+            &[
+                "climbing",
+                "drifting",
+                "crawling",
+                "gliding",
+                "marching",
+                "strolling",
+                "gathering",
+                "scattering",
+                "striking",
+                "plunging",
+                "carving",
+                "weaving",
+                "building",
+                "planting",
+                "painting",
+                "sculpting",
+                "melting",
+                "glowing",
+                "riding",
+                "flying",
+                "breaking",
+                "cracking",
+                "speaking",
+                "whispering",
+            ],
+        ),
+        CohyponymPool::new(
+            "adjectives",
+            &[
+                "electric",
+                "velvet",
+                "golden",
+                "silver",
+                "hollow",
+                "wooden",
+                "narrow",
+                "shallow",
+                "rough",
+                "dusty",
+                "bright",
+                "gentle",
+                "calm",
+                "dusk",
+                "wild",
+                "bold",
+                "ancient",
+                "distant",
+                "curious",
+                "patient",
+                "honest",
+                "modest",
+                "simple",
+                "humble",
+                "automated",
+                "robotic",
+                "fragile",
+                "sturdy",
+                "sharp",
+                "blunt",
+                "silent",
+                "serene",
+            ],
+        ),
+        CohyponymPool::new(
+            "adverbs",
+            &[
+                "quietly", "swiftly", "firmly", "softly", "boldly", "keenly", "brightly", "gently",
+                "calmly", "dimly", "sideways", "backward", "loudly", "fiercely", "bravely",
+                "proudly",
+            ],
+        ),
+        CohyponymPool::new(
+            "tech_digital",
+            &[
+                "server", "client", "packet", "frame", "socket", "channel", "buffer", "memory",
+                "thread", "process", "kernel", "driver", "cipher", "digest", "router", "switch",
+            ],
+        ),
+        CohyponymPool::new(
+            "tech_digital_plural",
+            &[
+                "servers",
+                "clients",
+                "packets",
+                "frames",
+                "sockets",
+                "channels",
+                "buffers",
+                "memories",
+                "threads",
+                "processes",
+                "kernels",
+                "drivers",
+                "ciphers",
+                "digests",
+                "routers",
+                "switches",
+            ],
+        ),
+        CohyponymPool::new(
+            "commerce_finance",
+            &[
+                "budget",
+                "ledger",
+                "tariff",
+                "subsidy",
+                "profit",
+                "deficit",
+                "asset",
+                "credit",
+                "audit",
+                "appraisal",
+                "merger",
+                "venture",
+                "invoice",
+                "voucher",
+                "dividend",
+                "premium",
+            ],
+        ),
+        CohyponymPool::new(
+            "commerce_finance_plural",
+            &[
+                "budgets",
+                "ledgers",
+                "tariffs",
+                "subsidies",
+                "profits",
+                "deficits",
+                "assets",
+                "credits",
+                "audits",
+                "appraisals",
+                "invoices",
+                "vouchers",
+                "dividends",
+                "premiums",
+            ],
+        ),
     ]
 }
 
@@ -481,7 +778,8 @@ impl Dictionary {
     /// Loads dictionary configuration from a JSON file.
     pub fn from_json_file(path: impl AsRef<Path>) -> Result<Self, std::io::Error> {
         let content = std::fs::read_to_string(path)?;
-        Self::from_json_str(&content).map_err(|e| std::io::Error::new(std::io::ErrorKind::InvalidData, e))
+        Self::from_json_str(&content)
+            .map_err(|e| std::io::Error::new(std::io::ErrorKind::InvalidData, e))
     }
 
     /// Serializes dictionary to JSON.
@@ -499,10 +797,8 @@ impl Dictionary {
 
     /// Adds a fixed bijective word pair (A <-> B).
     pub fn add_pair(&mut self, a: impl Into<String>, b: impl Into<String>) {
-        self.fixed_pairs.push((
-            a.into().to_ascii_lowercase(),
-            b.into().to_ascii_lowercase(),
-        ));
+        self.fixed_pairs
+            .push((a.into().to_ascii_lowercase(), b.into().to_ascii_lowercase()));
     }
 
     /// Builds a bijective substitution map.

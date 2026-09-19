@@ -10,37 +10,30 @@
 /// Touching any of these causes perplexity to jump +1,076% and quality filters to discard the page.
 pub const STOP_WORDS_113: &[&str] = &[
     // Articles
-    "a", "an", "the",
-    // Conjunctions
+    "a", "an", "the", // Conjunctions
     "and", "but", "or", "nor", "for", "so", "yet", "because", "although", "while", "if", "unless",
-    "since", "as", "though",
-    // Prepositions
+    "since", "as", "though", // Prepositions
     "of", "in", "to", "for", "with", "on", "at", "by", "from", "up", "about", "into", "over",
     "after", "beneath", "under", "above", "across", "through", "between", "against", "during",
-    "without", "before", "toward", "towards", "upon", "within", "along",
-    // Pronouns
-    "i", "you", "he", "she", "it", "we", "they", "me", "him", "her", "us", "them",
-    "my", "your", "his", "its", "our", "their", "mine", "yours", "hers", "ours", "theirs",
-    "this", "that", "these", "those", "who", "whom", "whose", "which", "what", "whatever",
+    "without", "before", "toward", "towards", "upon", "within", "along", // Pronouns
+    "i", "you", "he", "she", "it", "we", "they", "me", "him", "her", "us", "them", "my", "your",
+    "his", "its", "our", "their", "mine", "yours", "hers", "ours", "theirs", "this", "that",
+    "these", "those", "who", "whom", "whose", "which", "what", "whatever",
     // Auxiliary & copula verbs (every form of be, have, do)
-    "is", "am", "are", "was", "were", "be", "been", "being",
-    "have", "has", "had", "having",
-    "do", "does", "did", "doing",
-    // Modals
+    "is", "am", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do",
+    "does", "did", "doing", // Modals
     "can", "could", "shall", "should", "will", "would", "may", "might", "must",
     // Negations
-    "not", "no", "never", "none",
-    // Quantifiers
-    "all", "any", "some", "few", "many", "much", "more", "most", "every", "each", "both", "either", "neither",
+    "not", "no", "never", "none", // Quantifiers
+    "all", "any", "some", "few", "many", "much", "more", "most", "every", "each", "both", "either",
+    "neither",
 ];
 
 /// Closed-class lockdown list: frequent words that look like content but behave like glue.
 pub const CLOSED_CLASS_WORDS: &[&str] = &[
-    "get", "gets", "got", "gotten", "getting",
-    "make", "makes", "made", "making",
-    "said", "says", "say", "saying",
-    "day", "days", "now", "then", "here", "there",
-    "just", "also", "very", "too", "well", "even", "only", "such",
+    "get", "gets", "got", "gotten", "getting", "make", "makes", "made", "making", "said", "says",
+    "say", "saying", "day", "days", "now", "then", "here", "there", "just", "also", "very", "too",
+    "well", "even", "only", "such",
 ];
 
 /// Check if a lowercase word is on the prohibited list (stop words or closed-class glue).
@@ -72,13 +65,29 @@ pub fn swap_digits_in_str(s: &str) -> String {
 
 /// Month rotation by 6 months (+6).
 const MONTHS: [&str; 12] = [
-    "january", "february", "march", "april", "may", "june",
-    "july", "august", "september", "october", "november", "december"
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
 ];
 
 /// Weekday rotation by 3 days (+3).
 const WEEKDAYS: [&str; 7] = [
-    "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
 ];
 
 /// Rotates months by 6 months.

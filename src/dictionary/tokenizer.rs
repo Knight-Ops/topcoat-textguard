@@ -1,8 +1,8 @@
 //! Text tokenizer, casing preservation, and substitution engine.
 
-use std::collections::HashMap;
 use super::pools::{Dictionary, hash_str};
 use super::rules::{is_forbidden_word, rotate_month, rotate_weekday, swap_digits_in_str};
+use std::collections::HashMap;
 
 /// Casing convention for words.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -26,7 +26,10 @@ impl CaseStyle {
         }
 
         let first_upper = chars[0].is_uppercase();
-        let rest_lower = chars.iter().skip(1).all(|c| !c.is_alphabetic() || c.is_lowercase());
+        let rest_lower = chars
+            .iter()
+            .skip(1)
+            .all(|c| !c.is_alphabetic() || c.is_lowercase());
         if first_upper && rest_lower {
             return Self::Titlecase;
         }
@@ -48,7 +51,8 @@ impl CaseStyle {
                 match chars.next() {
                     None => String::new(),
                     Some(first) => {
-                        first.to_uppercase().collect::<String>() + &chars.as_str().to_ascii_lowercase()
+                        first.to_uppercase().collect::<String>()
+                            + &chars.as_str().to_ascii_lowercase()
                     }
                 }
             }
@@ -141,7 +145,10 @@ impl TextGuardEngine {
     {
         let dict = if let Some(path) = lookup("TEXTGUARD_DICTIONARY_PATH") {
             Dictionary::from_json_file(std::path::Path::new(&path)).unwrap_or_else(|e| {
-                eprintln!("Warning: failed to load TEXTGUARD_DICTIONARY_PATH ({}): {}", path, e);
+                eprintln!(
+                    "Warning: failed to load TEXTGUARD_DICTIONARY_PATH ({}): {}",
+                    path, e
+                );
                 Dictionary::default()
             })
         } else {

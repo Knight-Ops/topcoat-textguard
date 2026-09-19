@@ -1,10 +1,10 @@
 //! Font synthesizer that generates TrueType composite glyphs and GSUB ligature tables.
 
-use std::collections::BTreeMap;
-use std::io::Write;
 use super::base::{BaseFont, DEFAULT_BASE_FONT};
 use super::gsub::GsubBuilder;
 use crate::dictionary::tokenizer::ActiveLigature;
+use std::collections::BTreeMap;
+use std::io::Write;
 
 pub struct FontBuilder<'a> {
     base: BaseFont<'a>,
@@ -37,7 +37,8 @@ impl<'a> FontBuilder<'a> {
     /// Loads a TrueType font from a file path.
     pub fn from_file<P: AsRef<std::path::Path>>(path: P) -> Result<FontBuilder<'static>, String> {
         let p = path.as_ref();
-        let bytes = std::fs::read(p).map_err(|e| format!("Failed to read font file {}: {}", p.display(), e))?;
+        let bytes = std::fs::read(p)
+            .map_err(|e| format!("Failed to read font file {}: {}", p.display(), e))?;
         Self::from_vec(bytes)
     }
 
@@ -68,7 +69,10 @@ impl<'a> FontBuilder<'a> {
 
     /// Synthesizes all required font tables (cmap, glyf, loca, hmtx, GSUB, etc.)
     /// with composite glyphs and GSUB ligatures for the active substitutions.
-    pub fn generate_tables(&self, ligatures: &[ActiveLigature]) -> Result<BTreeMap<[u8; 4], Vec<u8>>, String> {
+    pub fn generate_tables(
+        &self,
+        ligatures: &[ActiveLigature],
+    ) -> Result<BTreeMap<[u8; 4], Vec<u8>>, String> {
         let base_data = self.base.data.as_ref();
 
         // Collect existing tables we want to preserve
@@ -88,7 +92,8 @@ impl<'a> FontBuilder<'a> {
         let mut new_loca = base_data[loca_rec.offset..loca_rec.offset + loca_rec.length].to_vec();
 
         // Convert base hmtx to a flat list of longHorMetric (advanceWidth, lsb) for all old glyphs
-        let mut hmtx_entries: Vec<(u16, i16)> = Vec::with_capacity(old_num_glyphs as usize + ligatures.len());
+        let mut hmtx_entries: Vec<(u16, i16)> =
+            Vec::with_capacity(old_num_glyphs as usize + ligatures.len());
         for gid in 0..old_num_glyphs {
             hmtx_entries.push(self.base.get_metrics(gid));
         }
@@ -103,7 +108,10 @@ impl<'a> FontBuilder<'a> {
                 if let Some(gid) = self.base.get_glyph_id(ch) {
                     input_gids.push(gid);
                 } else {
-                    return Err(format!("Char '{}' in decoy '{}' not found in base font", ch, lig.decoy));
+                    return Err(format!(
+                        "Char '{}' in decoy '{}' not found in base font",
+                        ch, lig.decoy
+                    ));
                 }
             }
 
@@ -113,7 +121,10 @@ impl<'a> FontBuilder<'a> {
                 if let Some(gid) = self.base.get_glyph_id(ch) {
                     original_gids.push(gid);
                 } else {
-                    return Err(format!("Char '{}' in original '{}' not found in base font", ch, lig.original));
+                    return Err(format!(
+                        "Char '{}' in original '{}' not found in base font",
+                        ch, lig.original
+                    ));
                 }
             }
 
@@ -148,7 +159,7 @@ impl<'a> FontBuilder<'a> {
                 comp_bytes.extend_from_slice(&flags.to_be_bytes());
                 comp_bytes.extend_from_slice(&orig_gid.to_be_bytes());
                 comp_bytes.extend_from_slice(&(x_cursor as i16).to_be_bytes()); // e
-                comp_bytes.extend_from_slice(&0i16.to_be_bytes());               // f
+                comp_bytes.extend_from_slice(&0i16.to_be_bytes()); // f
 
                 if gx_min != 0 || gx_max != 0 || gy_min != 0 || gy_max != 0 {
                     overall_x_min = overall_x_min.min((gx_min as i32 + x_cursor) as i16);
@@ -227,15 +238,24 @@ impl<'a> FontBuilder<'a> {
 
         // Assemble all tables
         let mut tables = BTreeMap::new();
-        tables.insert(*b"cmap", base_data[cmap_rec.offset..cmap_rec.offset + cmap_rec.length].to_vec());
+        tables.insert(
+            *b"cmap",
+            base_data[cmap_rec.offset..cmap_rec.offset + cmap_rec.length].to_vec(),
+        );
         tables.insert(*b"glyf", new_glyf);
         tables.insert(*b"head", new_head);
         tables.insert(*b"hhea", new_hhea);
         tables.insert(*b"hmtx", new_hmtx);
         tables.insert(*b"loca", new_loca);
         tables.insert(*b"maxp", new_maxp);
-        tables.insert(*b"name", base_data[name_rec.offset..name_rec.offset + name_rec.length].to_vec());
-        tables.insert(*b"OS/2", base_data[os2_rec.offset..os2_rec.offset + os2_rec.length].to_vec());
+        tables.insert(
+            *b"name",
+            base_data[name_rec.offset..name_rec.offset + name_rec.length].to_vec(),
+        );
+        tables.insert(
+            *b"OS/2",
+            base_data[os2_rec.offset..os2_rec.offset + os2_rec.length].to_vec(),
+        );
         tables.insert(*b"GSUB", gsub_table);
 
         Ok(tables)
@@ -313,7 +333,10 @@ impl<'a> FontBuilder<'a> {
             let entry_off = 12 + i * 16;
             if &font[entry_off..entry_off + 4] == b"head" {
                 let head_len = u32::from_be_bytes([
-                    font[entry_off + 12], font[entry_off + 13], font[entry_off + 14], font[entry_off + 15]
+                    font[entry_off + 12],
+                    font[entry_off + 13],
+                    font[entry_off + 14],
+                    font[entry_off + 15],
                 ]) as usize;
                 let head_data = &font[head_offset..head_offset + head_len];
                 let new_head_sum = compute_table_checksum(head_data);
@@ -331,7 +354,9 @@ impl<'a> FontBuilder<'a> {
 
         // First compute checkSumAdjustment by generating SFNT layout
         let sfnt_bytes = self.build_font(ligatures)?;
-        let head_checksum_adj = &sfnt_bytes[for_tag_offset(&tables, *b"head", 12 + tables.len() * 16) + 8..for_tag_offset(&tables, *b"head", 12 + tables.len() * 16) + 12];
+        let head_checksum_adj =
+            &sfnt_bytes[for_tag_offset(&tables, *b"head", 12 + tables.len() * 16) + 8
+                ..for_tag_offset(&tables, *b"head", 12 + tables.len() * 16) + 12];
         if let Some(head) = tables.get_mut(b"head") {
             head[8..12].copy_from_slice(head_checksum_adj);
         }
@@ -352,7 +377,8 @@ impl<'a> FontBuilder<'a> {
             let orig_checksum = compute_table_checksum(data);
 
             // Compress table data with zlib
-            let mut encoder = flate2::write::ZlibEncoder::new(Vec::new(), flate2::Compression::default());
+            let mut encoder =
+                flate2::write::ZlibEncoder::new(Vec::new(), flate2::Compression::default());
             encoder.write_all(data).map_err(|e| e.to_string())?;
             let compressed = encoder.finish().map_err(|e| e.to_string())?;
 
@@ -362,7 +388,13 @@ impl<'a> FontBuilder<'a> {
                 (orig_len, data.clone())
             };
 
-            woff_dir_entries.push((*tag, current_offset as u32, comp_len, orig_len, orig_checksum));
+            woff_dir_entries.push((
+                *tag,
+                current_offset as u32,
+                comp_len,
+                orig_len,
+                orig_checksum,
+            ));
 
             let mut padded = table_data;
             while padded.len() % 4 != 0 {
@@ -408,7 +440,11 @@ impl<'a> FontBuilder<'a> {
     }
 }
 
-fn for_tag_offset(tables: &BTreeMap<[u8; 4], Vec<u8>>, target_tag: [u8; 4], base_offset: usize) -> usize {
+fn for_tag_offset(
+    tables: &BTreeMap<[u8; 4], Vec<u8>>,
+    target_tag: [u8; 4],
+    base_offset: usize,
+) -> usize {
     let mut off = base_offset;
     for (tag, data) in tables {
         if *tag == target_tag {

@@ -1,9 +1,9 @@
 //! High-level unified builder and guard orchestration.
 
-use std::path::{Path, PathBuf};
 use crate::dictionary::pools::{Dictionary, hash_str};
 use crate::dictionary::tokenizer::{ActiveLigature, ShieldStats, TextGuardEngine};
 use crate::font::builder::FontBuilder;
+use std::path::{Path, PathBuf};
 
 /// Result of protecting text with font ligature generation.
 #[derive(Debug, Clone)]
@@ -103,7 +103,8 @@ impl<'a> TextGuardBuilder<'a> {
     /// Loads a custom cohyponym dictionary from a JSON file.
     pub fn dictionary_file<P: AsRef<Path>>(mut self, path: P) -> Result<Self, String> {
         let p = path.as_ref();
-        let dict = Dictionary::from_json_file(p).map_err(|e| format!("Failed to read dictionary file {}: {}", p.display(), e))?;
+        let dict = Dictionary::from_json_file(p)
+            .map_err(|e| format!("Failed to read dictionary file {}: {}", p.display(), e))?;
         self.dictionary = Some(dict);
         Ok(self)
     }

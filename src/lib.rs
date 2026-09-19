@@ -18,12 +18,12 @@ pub mod font;
 pub mod guard;
 
 pub use component::{
-    Shield, build_shield_font, build_shield_woff, fnv1a_hash,
-    guard_text, guard_text_with_salt, guard_text_with_seed,
+    Shield, build_shield_font, build_shield_woff, fnv1a_hash, guard_text, guard_text_with_salt,
+    guard_text_with_seed,
 };
 pub use dictionary::{
     ActiveLigature, CaseStyle, CohyponymPool, Dictionary, ShieldResult, ShieldStats,
-    TextGuardEngine, WordPair, WORD_PAIRS, default_builtin_pools,
+    TextGuardEngine, WORD_PAIRS, WordPair, default_builtin_pools,
 };
-pub use font::{BaseFont, FontBuilder, GsubBuilder, DEFAULT_BASE_FONT};
+pub use font::{BaseFont, DEFAULT_BASE_FONT, FontBuilder, GsubBuilder};
 pub use guard::{GuardedProse, TextGuard, TextGuardBuilder};

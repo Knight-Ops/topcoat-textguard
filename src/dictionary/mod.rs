@@ -3,7 +3,7 @@ pub mod rules;
 pub mod tokenizer;
 
 pub use pools::{
-    CohyponymPool, Dictionary, WordPair, WORD_PAIRS, build_bijective_map,
+    CohyponymPool, Dictionary, WORD_PAIRS, WordPair, build_bijective_map,
     build_dynamic_bijective_map, default_builtin_pools, hash_str,
 };
 pub use rules::{CLOSED_CLASS_WORDS, STOP_WORDS_113, is_forbidden_word, swap_digits_in_str};
@@ -37,7 +37,11 @@ mod tests {
         assert!(res.decoy_text.contains("engine"));
 
         // Ligature for engine -> horse must exist
-        let lig = res.ligatures.iter().find(|l| l.decoy == "engine").expect("engine ligature");
+        let lig = res
+            .ligatures
+            .iter()
+            .find(|l| l.decoy == "engine")
+            .expect("engine ligature");
         assert_eq!(lig.original, "horse");
     }
 
@@ -74,10 +78,16 @@ mod tests {
 
         // Crucial test: Bijective involution holds for ANY seed!
         let roundtrip1 = engine1.transform(&res1.decoy_text);
-        assert_eq!(roundtrip1.decoy_text, input, "Involution failed for seed 1001");
+        assert_eq!(
+            roundtrip1.decoy_text, input,
+            "Involution failed for seed 1001"
+        );
 
         let roundtrip2 = engine2.transform(&res2.decoy_text);
-        assert_eq!(roundtrip2.decoy_text, input, "Involution failed for seed 9999");
+        assert_eq!(
+            roundtrip2.decoy_text, input,
+            "Involution failed for seed 9999"
+        );
     }
 
     #[test]

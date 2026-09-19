@@ -51,45 +51,80 @@ impl<'a> BaseFont<'a> {
             let off = 12 + i * 16;
             let mut tag = [0u8; 4];
             tag.copy_from_slice(&slice[off..off + 4]);
-            let checksum = u32::from_be_bytes([slice[off + 4], slice[off + 5], slice[off + 6], slice[off + 7]]);
-            let offset = u32::from_be_bytes([slice[off + 8], slice[off + 9], slice[off + 10], slice[off + 11]]) as usize;
-            let length = u32::from_be_bytes([slice[off + 12], slice[off + 13], slice[off + 14], slice[off + 15]]) as usize;
-            tables.insert(tag, TableRecord { tag, checksum, offset, length });
+            let checksum = u32::from_be_bytes([
+                slice[off + 4],
+                slice[off + 5],
+                slice[off + 6],
+                slice[off + 7],
+            ]);
+            let offset = u32::from_be_bytes([
+                slice[off + 8],
+                slice[off + 9],
+                slice[off + 10],
+                slice[off + 11],
+            ]) as usize;
+            let length = u32::from_be_bytes([
+                slice[off + 12],
+                slice[off + 13],
+                slice[off + 14],
+                slice[off + 15],
+            ]) as usize;
+            tables.insert(
+                tag,
+                TableRecord {
+                    tag,
+                    checksum,
+                    offset,
+                    length,
+                },
+            );
         }
 
         // Parse maxp for numGlyphs
         let maxp_rec = tables.get(b"maxp").ok_or("Missing maxp table")?;
-        let num_glyphs = u16::from_be_bytes([slice[maxp_rec.offset + 4], slice[maxp_rec.offset + 5]]);
+        let num_glyphs =
+            u16::from_be_bytes([slice[maxp_rec.offset + 4], slice[maxp_rec.offset + 5]]);
 
         // Parse head for indexToLocFormat
         let head_rec = tables.get(b"head").ok_or("Missing head table")?;
-        let index_to_loc_format = i16::from_be_bytes([slice[head_rec.offset + 50], slice[head_rec.offset + 51]]);
+        let index_to_loc_format =
+            i16::from_be_bytes([slice[head_rec.offset + 50], slice[head_rec.offset + 51]]);
 
         // Parse hhea for numberOfHMetrics
         let hhea_rec = tables.get(b"hhea").ok_or("Missing hhea table")?;
-        let num_h_metrics = u16::from_be_bytes([slice[hhea_rec.offset + 34], slice[hhea_rec.offset + 35]]);
+        let num_h_metrics =
+            u16::from_be_bytes([slice[hhea_rec.offset + 34], slice[hhea_rec.offset + 35]]);
 
         // Parse cmap for Unicode BMP format 4 subtable
         let cmap_rec = tables.get(b"cmap").ok_or("Missing cmap table")?;
-        let num_cmap_subtables = u16::from_be_bytes([slice[cmap_rec.offset + 2], slice[cmap_rec.offset + 3]]) as usize;
+        let num_cmap_subtables =
+            u16::from_be_bytes([slice[cmap_rec.offset + 2], slice[cmap_rec.offset + 3]]) as usize;
         let mut chosen_subtable = None;
 
         for i in 0..num_cmap_subtables {
             let sub_rec = cmap_rec.offset + 4 + i * 8;
             let platform_id = u16::from_be_bytes([slice[sub_rec], slice[sub_rec + 1]]);
             let encoding_id = u16::from_be_bytes([slice[sub_rec + 2], slice[sub_rec + 3]]);
-            let sub_offset = cmap_rec.offset + u32::from_be_bytes([
-                slice[sub_rec + 4], slice[sub_rec + 5], slice[sub_rec + 6], slice[sub_rec + 7]
-            ]) as usize;
+            let sub_offset = cmap_rec.offset
+                + u32::from_be_bytes([
+                    slice[sub_rec + 4],
+                    slice[sub_rec + 5],
+                    slice[sub_rec + 6],
+                    slice[sub_rec + 7],
+                ]) as usize;
 
             let format = u16::from_be_bytes([slice[sub_offset], slice[sub_offset + 1]]);
-            if format == 4 && ((platform_id == 0 && (encoding_id == 3 || encoding_id == 4)) || (platform_id == 3 && encoding_id == 1)) {
+            if format == 4
+                && ((platform_id == 0 && (encoding_id == 3 || encoding_id == 4))
+                    || (platform_id == 3 && encoding_id == 1))
+            {
                 chosen_subtable = Some(sub_offset);
                 break;
             }
         }
 
-        let cmap_subtable_offset = chosen_subtable.ok_or("No supported format 4 cmap subtable found")?;
+        let cmap_subtable_offset =
+            chosen_subtable.ok_or("No supported format 4 cmap subtable found")?;
 
         Ok(Self {
             data,
@@ -114,19 +149,37 @@ impl<'a> BaseFont<'a> {
         let id_range_offset = id_delta_offset + seg_count * 2;
 
         for i in 0..seg_count {
-            let end_code = u16::from_be_bytes([data[end_codes_offset + i * 2], data[end_codes_offset + i * 2 + 1]]);
+            let end_code = u16::from_be_bytes([
+                data[end_codes_offset + i * 2],
+                data[end_codes_offset + i * 2 + 1],
+            ]);
             if end_code >= code {
-                let start_code = u16::from_be_bytes([data[start_codes_offset + i * 2], data[start_codes_offset + i * 2 + 1]]);
+                let start_code = u16::from_be_bytes([
+                    data[start_codes_offset + i * 2],
+                    data[start_codes_offset + i * 2 + 1],
+                ]);
                 if start_code <= code {
-                    let id_range = u16::from_be_bytes([data[id_range_offset + i * 2], data[id_range_offset + i * 2 + 1]]);
-                    let id_delta = i16::from_be_bytes([data[id_delta_offset + i * 2], data[id_delta_offset + i * 2 + 1]]);
+                    let id_range = u16::from_be_bytes([
+                        data[id_range_offset + i * 2],
+                        data[id_range_offset + i * 2 + 1],
+                    ]);
+                    let id_delta = i16::from_be_bytes([
+                        data[id_delta_offset + i * 2],
+                        data[id_delta_offset + i * 2 + 1],
+                    ]);
                     if id_range == 0 {
                         let gid = ((code as i32 + id_delta as i32) & 0xffff) as u16;
                         return if gid > 0 { Some(gid) } else { None };
                     } else {
-                        let glyph_index_addr = id_range_offset + i * 2 + id_range as usize + (code - start_code) as usize * 2;
+                        let glyph_index_addr = id_range_offset
+                            + i * 2
+                            + id_range as usize
+                            + (code - start_code) as usize * 2;
                         if glyph_index_addr + 1 < data.len() {
-                            let raw_gid = u16::from_be_bytes([data[glyph_index_addr], data[glyph_index_addr + 1]]);
+                            let raw_gid = u16::from_be_bytes([
+                                data[glyph_index_addr],
+                                data[glyph_index_addr + 1],
+                            ]);
                             if raw_gid != 0 {
                                 let gid = ((raw_gid as i32 + id_delta as i32) & 0xffff) as u16;
                                 return if gid > 0 { Some(gid) } else { None };
@@ -196,8 +249,10 @@ impl<'a> BaseFont<'a> {
             if o2 + 4 > data.len() {
                 return (0, 0, 1000, 1000);
             }
-            let off1 = u32::from_be_bytes([data[o1], data[o1 + 1], data[o1 + 2], data[o1 + 3]]) as usize;
-            let off2 = u32::from_be_bytes([data[o2], data[o2 + 1], data[o2 + 2], data[o2 + 3]]) as usize;
+            let off1 =
+                u32::from_be_bytes([data[o1], data[o1 + 1], data[o1 + 2], data[o1 + 3]]) as usize;
+            let off2 =
+                u32::from_be_bytes([data[o2], data[o2 + 1], data[o2 + 2], data[o2 + 3]]) as usize;
             (off1, off2)
         } else {
             let o1 = loca_rec.offset + gid_usize * 2;
