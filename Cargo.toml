@@ -1,0 +1,22 @@
+[package]
+name = "topcoat-textguard"
+version = "0.1.0"
+edition = "2024"
+description = "Pure Rust OpenType GSUB ligature-based text defense consent layer for Tokio Topcoat web applications"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/Knight-Ops/topcoat-textguard"
+keywords = ["topcoat", "anti-scraping", "opentype", "ligatures", "defense"]
+categories = ["web-programming::http-server", "text-processing"]
+
+[dependencies]
+topcoat = "0.8.1"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+base64 = "0.22"
+flate2 = "1.1.10"
+
+[[example]]
+name = "blog"
+path = "examples/blog.rs"
